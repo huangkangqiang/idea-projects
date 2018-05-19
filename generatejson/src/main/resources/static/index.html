@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="image/logo.ico">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <title>MOCK</title>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/bootstrap-table.min.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/index.js"></script>
+</head>
+<body class="bg-white">
+<div class="container" ng-app="myApp" ng-controller="appController">
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="image/logo.svg" alt=""
+             width="75" height="75">
+        <h2>构造JSON数据</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-6 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">时间范围</span>
+            </h4>
+            <div class="input-group input-group-default mb-4">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">开始时间</span>
+                </div>
+                <input type="text" class="form-control" placeholder="请输入，格式: 20180421 12:00:00"
+                       ng-model="generateParams.startTime">
+            </div>
+            <div class="input-group input-group-default mb-4">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">结束时间</span>
+                </div>
+                <input type="text" class="form-control" placeholder="请输入，格式: 20180421 12:00:00"
+                       ng-model="generateParams.endTime">
+            </div>
+        </div>
+        <div class="col-md-6 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">类型</span>
+            </h4>
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <label class="input-group-text">类&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;型</label>
+                </div>
+                <select class="custom-select" ng-model="generateParams.dataType" ng-options="y for y in dataTypeList">
+                </select>
+            </div>
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <label class="input-group-text">时间粒度</label>
+                </div>
+                <select class="custom-select" ng-model="generateParams.interval" ng-options="y for y in intervalList">
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">包含的KQI</span>
+            </h4>
+            <div class="col-md-12 order-md-2 mb-4">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="col-md-12">
+                        <th>ID</th>
+                        <th>最小值</th>
+                        <th>最大值</th>
+                        <th>保留小数位</th>
+                        <th>单位</th>
+                        <th>业务类型</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="x in kqiList">
+                        <td>
+                            <input type="number" class="mean-input" placeholder="请输入kqi id" ng-model="x.id">
+                        </td>
+                        <td>
+                            <input type="number" class="mean-input" placeholder="请输入最小值" value="0" ng-model="x.min">
+                        </td>
+                        <td>
+                            <input type="number" class="mean-input" placeholder="请输入最大值" value="999" ng-model="x.max">
+                        </td>
+                        <td>
+                            <select class="custom-select" ng-model="x.scale" ng-options="y for y in scaleList">
+                            </select>
+                        </td>
+                        <td>
+                            <select class="custom-select" ng-model="x.unit" ng-options="y for y in unitList">
+                            </select>
+                        </td>
+                        <td>
+                            <select class="custom-select" ng-model="x.serType" ng-options="y for y in serTypeList">
+                            </select>
+                        </td>
+                        <td>
+                            <input class="btn btn-primary btn-sm" type="button" value="添加" ng-click="addKqi()">
+                            <input class="btn btn-danger btn-sm" type="button" value="删除" ng-click="removeKqi(x)"
+                                   ng-show="kqiList.length>1">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-block" ng-click="generateJsonFile()">点击生成JSON文件</button>
+        </div>
+    </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        错误信息
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    {{errorMessage}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+</body>
+</html>
