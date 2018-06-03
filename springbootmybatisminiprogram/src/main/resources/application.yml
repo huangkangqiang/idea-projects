@@ -1,0 +1,18 @@
+#server配置
+server:
+  port: 10086
+  servlet:
+    context-path: /demo
+
+#jdbc配置
+jdbc:
+  driver: com.mysql.jdbc.Driver
+  url: jdbc:mysql://120.79.151.88:3306/dev?useUnicode=true&charaterEncoding=utf8&useSSL=false
+  username: dev
+  password: Dev@12138
+
+#mybatis配置
+mybatis:
+  configFile: /config/mybatis-config.xml
+  mapperPath: /mapper/**.xml
+  entityPackage: com.example.demo.dao

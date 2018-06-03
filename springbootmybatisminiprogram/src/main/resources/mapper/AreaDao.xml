@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.AreaDao">
+    <!-- 查询所有区域 -->
+    <select id="queryAreaAll" resultType="com.example.demo.entity.Area">
+        SELECT area_id,area_name,priority,create_time,last_edit_time
+        FROM tb_area
+    </select>
+
+    <!-- 新增区域 -->
+    <insert id="insertArea" parameterType="com.example.demo.entity.Area">
+        INSERT INTO tb_area (area_name,priority) VALUE (#{areaName},#{priority})
+    </insert>
+
+    <!-- 根据区域id删除区域 -->
+    <delete id="removeArea">
+        DELETE FROM tb_area WHERE area_id=#{areaId}
+    </delete>
+
+    <!-- 修改区域信息 -->
+    <update id="updateArea" parameterType="com.example.demo.entity.Area">
+        UPDATE tb_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaName!=null">
+                area_name=#{areaName},
+            </if>
+            <if test="priority!=null">
+                priority=#{priority},
+            </if>
+        </trim>
+    </update>
+
+    <!-- 根据区域id查找区域信息 -->
+    <select id="queryAreaById" resultType="com.example.demo.entity.Area">
+        SELECT area_id,area_name,priority,create_time,last_edit_time
+        FROM tb_area
+        WHERE area_id=#{areaId}
+    </select>
+</mapper>
