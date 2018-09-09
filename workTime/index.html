@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>获取工时</title>
+    <link rel="shortcut icon" href="./css/images/logo.ico" />
+    <link rel="stylesheet" href="./css/element-ui.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/vue.js"></script>
+    <script src="./js/element-ui.js"></script>
+</head>
+
+<body>
+    <div class="container" id="app">
+        <div>
+            <label class="fl">类型：</label>
+            <el-select v-model="type" clearable placeholder="请选择" class="fl typeSelect">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+            </el-select>
+            <label class="fl staffIdLabel">工号：</label>
+            <el-input placeholder="请输入工号" v-model="staffId" clearable class="fl staffIdInput" v-on:change="staffIdChange"></el-input>
+            <el-date-picker v-model="date" type="daterange" range-separator="-" unlink-panels format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                start-placeholder="开始日期" end-placeholder="结束日期" class="fl">
+            </el-date-picker>
+            <el-button-group class="buttonGroup">
+                <el-button type="primary" v-on:click="query">查询</el-button>
+                <el-button type="primary" v-on:click="queryCurMonth">查询当月</el-button>
+            </el-button-group>
+            <el-button-group class="buttonGroup">
+                <el-button type="primary" v-on:click="exportExcel">导出报表</el-button>
+            </el-button-group>
+        </div>
+        <div class="tableDiv">
+            <el-table :data="tableData" border style="width: 100%" v-loading="isMask" height="600px" max-height="600px" :row-class-name="tableRowClassName">
+                <el-table-column type="index" width="50">
+                </el-table-column>
+                <el-table-column prop="date" label="日期" width="180">
+                </el-table-column>
+                <el-table-column prop="name" label="姓名" width="180">
+                </el-table-column>
+                <el-table-column prop="staffId" label="工号">
+                </el-table-column>
+                <el-table-column prop="supplier" label="供应商" :formatter="formatSupplier">
+                </el-table-column>
+                <el-table-column prop="startTime" label="开始时间" width="180">
+                </el-table-column>
+                <el-table-column prop="endTime" label="结束时间" width="180">
+                </el-table-column>
+                <el-table-column prop="punishTime" label="惩罚时间">
+                </el-table-column>
+                <el-table-column prop="type" label="考勤类型">
+                </el-table-column>
+            </el-table>
+        </div>
+        <div style="float: left;margin-top: 16px;" id="message">
+            <p>工时总长(min)：
+                <span>{{totalVO.totalWorkTime}}</span>
+                平均工时：
+                <span>{{totalVO.avgWorkTime}}</span>
+                工作天数：
+                <span>{{totalVO.workDayNums}}</span>
+                加班天数：
+                <span>{{totalVO.otWrokDays}}</span>
+                异常天数：
+                <span>{{totalVO.exceptionDays}}</span>
+            </p>
+        </div>
+        <div class="block" style="margin-top: 30px;float: right;">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="pageSizes"
+                :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+        </div>
+    </div>
+</body>
+<script src="./js/index.js"></script>
+
+</html>
